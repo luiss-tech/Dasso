@@ -1,0 +1,16 @@
+{
+    "name": "pagina/backend-architecture",
+    "description": "Backend architecture scaffold for a PHP/MySQL/XAMPP application.",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.0"
+    },
+    "require-dev": {},
+    "scripts": {
+        "start": "php -S localhost:8000 -t public"
+    }
+}

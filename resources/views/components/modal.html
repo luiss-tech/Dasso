@@ -1,0 +1,15 @@
+<!-- Modal base markup (hidden by default) -->
+<div id="modal-base" class="modal-backdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <header>
+      <h3 id="modal-title">Modal title</h3>
+    </header>
+    <div class="modal-body">
+      <p>Modal content placeholder.</p>
+    </div>
+    <footer style="margin-top: var(--space-lg); display:flex; gap:var(--space-sm); justify-content:flex-end;">
+      <button class="btn btn-secondary" onclick="document.getElementById('modal-base').hidden = true">Cerrar</button>
+      <button class="btn">Confirmar</button>
+    </footer>
+  </div>
+</div>

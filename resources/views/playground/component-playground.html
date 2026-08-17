@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Component Playground</title>
+  <link rel="stylesheet" href="/assets/css/design-system/design-system.css" />
+  <link rel="stylesheet" href="/assets/css/layout/layout.css" />
+</head>
+<body>
+  <main class="container" style="padding-top: var(--space-3xl); padding-bottom: var(--space-3xl);">
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">Component Playground</h1>
+          <p class="section-description">Ejemplos de componentes atómicos y patrones visuales del sistema.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Botones</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <h3 class="card-title">Primarios</h3>
+          <div class="component-buttons">
+            <button class="btn">Primario</button>
+            <button class="btn btn-secondary">Secundario</button>
+            <button class="btn btn-success">Éxito</button>
+            <button class="btn btn-danger">Peligro</button>
+            <button class="btn btn-icon" aria-label="Notificaciones">🔔</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Estado</h3>
+          <button class="btn" disabled>Deshabilitado</button>
+          <button class="btn btn-secondary">Hover</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Formularios</h2>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3 class="card-title">Inputs</h3>
+          <label class="label" for="playground-input">Campo de texto</label>
+          <input id="playground-input" class="input" type="text" placeholder="Ejemplo" />
+
+          <label class="label" for="playground-select">Selector</label>
+          <select id="playground-select" class="select">
+            <option>Opción 1</option>
+            <option>Opción 2</option>
+          </select>
+
+          <label class="label" for="playground-textarea">Área de texto</label>
+          <textarea id="playground-textarea" class="textarea" rows="4"></textarea>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Badges y Alertas</h3>
+          <span class="badge">Nuevo</span>
+          <span class="badge" style="background: rgba(34,197,94,0.16); color: var(--color-success);">Seguro</span>
+          <div class="alert alert-primary">Alerta primaria</div>
+          <div class="alert alert-success">Éxito</div>
+          <div class="alert alert-warning">Advertencia</div>
+          <div class="alert alert-danger">Error</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Cards y Layout</h2>
+      </div>
+      <div class="card-group grid grid-3">
+        <div class="card">
+          <h3 class="card-title">Card uno</h3>
+          <p>Contenido breve para una tarjeta de información.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Card dos</h3>
+          <p>Uso consistente con espacios y contorno neutro.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Card tres</h3>
+          <p>Perfecta para resumen de soluciones o métricas.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Modales y Loaders</h2>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3 class="card-title">Loader</h3>
+          <div class="loader" aria-hidden="true"></div>
+          <div class="skeleton" style="width: 100%; height: 1.25rem; margin-top: var(--space-md);"></div>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Modal</h3>
+          <div class="modal-backdrop" hidden>
+            <div class="modal">
+              <h3 class="card-title">Título del modal</h3>
+              <p>Contenido de ejemplo para el modal.</p>
+              <button class="btn" onclick="this.closest('.modal-backdrop').hidden = true">Cerrar</button>
+            </div>
+          </div>
+          <p>El modal se mostrará con JS en implementación final.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,8 @@
+/vendor/
+/storage/logs/*
+!/storage/logs/.gitkeep
+/public/prueba.php
+.env
+.env.*
+!.env.example
+*.log
