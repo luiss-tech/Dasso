@@ -1,0 +1,78 @@
+name: Publish DASSO preview
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, pdo, pdo_mysql
+
+      - name: Install PHP dependencies
+        run: composer install --no-dev --prefer-dist --no-progress
+
+      - name: Render marketing pages
+        run: |
+          mkdir -p _site
+          cat > /tmp/router.php <<'PHP'
+          <?php
+          $file = __DIR__ . '/public' . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+          if (is_file($file)) {
+              return false;
+          }
+          require __DIR__ . '/public/index.php';
+          PHP
+
+          php -S 127.0.0.1:8000 -t public /tmp/router.php >/tmp/dasso-php.log 2>&1 &
+          routes=("" "soluciones" "productos" "como-funciona" "demostracion" "beneficios")
+          for route in "${routes[@]}"; do
+            if [ -z "$route" ]; then
+              target="_site/index.html"
+              url="http://127.0.0.1:8000/"
+            else
+              mkdir -p "_site/$route"
+              target="_site/$route/index.html"
+              url="http://127.0.0.1:8000/$route"
+            fi
+            curl --fail --retry 10 --retry-delay 1 "$url" -o "$target"
+          done
+
+          cp -R public/assets _site/assets
+          cp -R public/uploads _site/uploads
+          find _site -type f -name '*.html' -exec sed -i 's#/Pagina/public#/Dasso#g' {} +
+          touch _site/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
