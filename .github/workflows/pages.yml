@@ -33,16 +33,29 @@ jobs:
       - name: Render marketing pages
         run: |
           mkdir -p _site
-            cat > "$GITHUB_WORKSPACE/router.php" <<'PHP'
+          cat > "$GITHUB_WORKSPACE/render.php" <<'PHP'
           <?php
-          $file = __DIR__ . '/public' . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-          if (is_file($file)) {
-              return false;
+          require __DIR__ . '/vendor/autoload.php';
+
+          $methods = [
+            '' => 'index',
+            'soluciones' => 'soluciones',
+            'productos' => 'productos',
+            'como-funciona' => 'comoFuncion',
+            'demostracion' => 'demostracion',
+            'beneficios' => 'beneficios',
+          ];
+
+          $route = $argv[1] ?? '';
+          if (!array_key_exists($route, $methods)) {
+            fwrite(STDERR, "Unknown route: $route\n");
+            exit(1);
           }
-          require __DIR__ . '/public/index.php';
+
+          $controller = new App\Controllers\HomeController();
+          $controller->{$methods[$route]}();
           PHP
 
-            php -S 127.0.0.1:8000 -t public "$GITHUB_WORKSPACE/router.php" >/tmp/dasso-php.log 2>&1 &
           routes=("" "soluciones" "productos" "como-funciona" "demostracion" "beneficios")
           for route in "${routes[@]}"; do
             if [ -z "$route" ]; then
@@ -51,9 +64,8 @@ jobs:
             else
               mkdir -p "_site/$route"
               target="_site/$route/index.html"
-              url="http://127.0.0.1:8000/$route"
             fi
-            curl --fail --retry 10 --retry-delay 1 "$url" -o "$target"
+            php "$GITHUB_WORKSPACE/render.php" "$route" > "$target"
           done
 
           cp -R public/assets _site/assets
